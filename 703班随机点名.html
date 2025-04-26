@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>道德与法治课堂抽问随机点名</title>
+    <style>
+        /* 整体样式 */
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 姓名显示区域样式 */
+        #nameDisplay {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 600px;
+            transition: font-size 0.3s ease, color 0.3s ease;
+        }
+
+        /* 选中姓名时的样式 */
+        #nameDisplay.highlight {
+            color: blue;
+            font-size: 6rem;
+        }
+
+        /* 速度控制滑轮样式 */
+        #speedControl {
+            margin: 20px 0;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* 按钮样式 */
+        button {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            color: #fff;
+            background: #ff6f61;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #ff3b2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>道德与法治课堂抽问随机点名</h1>
+    <div id="nameDisplay">点击开始抽问</div>
+    <input type="range" id="speedControl" min="1" max="100" value="50">
+    <button id="startButton">开始抽问</button>
+
+    <script>
+        // 学生姓名列表
+        const names = [
+            "陈丹丹", "陈娇娇", "陈诗韵", "杜苗苗", "杜媛媛", "付俊杰", "高竹", "胡军吉", "胡茂景", "黄冬冰",
+            "廖鑫海", "刘海", "罗远", "冉家兴", "冉景涛", "冉巧慧", "冉润东", "冉雅馨", "田浩", "田金岚",
+            "田琼", "熊潭军", "杨涵", "张娜", "张文科", "赵雪菲", "郑贵秦", "郑森林", "郑秀平", "周雨蝶",
+            "朱智齐", "刘子瀚", "冉珊珊"
+        ];
+
+        let interval; // 定时器
+        let isRunning = false; // 是否正在滚动
+        const nameDisplay = document.getElementById('nameDisplay');
+        const startButton = document.getElementById('startButton');
+        const speedControl = document.getElementById('speedControl');
+
+        // 随机获取一个姓名
+        function getRandomName() {
+            return names[Math.floor(Math.random() * names.length)];
+        }
+
+        // 开始滚动姓名
+        function startRolling() {
+            interval = setInterval(() => {
+                nameDisplay.textContent = getRandomName();
+            }, 1000 / speedControl.value);
+        }
+
+        // 停止滚动并突出显示选中的姓名
+        function stopRolling() {
+            clearInterval(interval);
+            nameDisplay.classList.add('highlight');
+        }
+
+        // 按钮点击事件
+        startButton.addEventListener('click', () => {
+            if (isRunning) {
+                stopRolling();
+                startButton.textContent = '开始抽问';
+            } else {
+                startRolling();
+                startButton.textContent = '暂停抽问';
+                nameDisplay.classList.remove('highlight');
+            }
+            isRunning = !isRunning;
+        });
+
+        // 滑轮控制速度事件
+        speedControl.addEventListener('input', () => {
+            if (isRunning) {
+                clearInterval(interval);
+                startRolling();
+            }
+        });
+    </script>
+</body>
+</html>
