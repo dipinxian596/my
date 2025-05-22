@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>道德与法治课堂抽问随机点名</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        #nameDisplay {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 600px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        #nameDisplay.highlight {
+            color: #007bff;
+            font-size: 5rem;
+        }
+
+        #speedControl {
+            margin: 20px 0;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        #startButton {
+            background: #ff6f61;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        #startButton:hover {
+            background: #ff3b2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>道德与法治课堂抽问随机点名</h1>
+    <div id="nameDisplay">点击开始抽问</div>
+    <input type="range" id="speedControl" min="1" max="100" value="50">
+    <button id="startButton">开始抽问</button>
+
+    <script>
+        const names = [
+            "杜烨", "付超", "郭金凤", "胡丹妮", "胡艳霞", "胡一飞", "胡一新", "胡依然", 
+            "蒋佛森", "郎健豪", "郎林涛", "郎宇坤", "李威", "李亦可", "刘菲菲", "罗格", 
+            "冉慧仪", "冉金涛", "冉伟宏", "冉燕斌", "冉雨彤", "冉云慧", "任馨蕊", "田浪静", 
+            "王辰熙", "王银贵", "吴羽彤", "杨家林", "杨思宇", "杨雨桐", "杨智", "杨子浩", 
+            "余家俊", "张诗琪", "张佳乐", "陈佳俊", "冉珊珊", "罗宏江", "王雨欣", "张倩萍", 
+            "陈思琦", "张佳睿"
+        ];
+
+        let interval;
+        let isRunning = false;
+        const nameDisplay = document.getElementById('nameDisplay');
+        const startButton = document.getElementById('startButton');
+        const speedControl = document.getElementById('speedControl');
+
+        function getRandomName() {
+            return names[Math.floor(Math.random() * names.length)];
+        }
+
+        function startRolling() {
+            if (isRunning) return;
+            isRunning = true;
+            startButton.textContent = '暂停抽问';
+            nameDisplay.classList.remove('highlight');
+            interval = setInterval(() => {
+                nameDisplay.textContent = getRandomName();
+            }, 1000 / speedControl.value);
+        }
+
+        function stopRolling() {
+            if (!isRunning) return;
+            isRunning = false;
+            startButton.textContent = '开始抽问';
+            clearInterval(interval);
+            nameDisplay.classList.add('highlight');
+        }
+
+        startButton.addEventListener('click', () => {
+            if (isRunning) {
+                stopRolling();
+            } else {
+                startRolling();
+            }
+        });
+
+        speedControl.addEventListener('input', () => {
+            if (isRunning) {
+                clearInterval(interval);
+                interval = setInterval(() => {
+                    nameDisplay.textContent = getRandomName();
+                }, 1000 / speedControl.value);
+            }
+        });
+    </script>
+</body>
+</html>
